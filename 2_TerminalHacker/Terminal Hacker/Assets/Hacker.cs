@@ -8,8 +8,12 @@ public class Hacker : MonoBehaviour
     //Global Variables 
     int level;
     Screen currentScreen;
-    string userPassword;
+    //string userPassword;
     List<string> Purina = new List<string> { "food", "bowl", "puppy", "toys", "chow" };
+    string passLvlOne = "marleau";
+    string passLvlTwo = "gumbo";
+    string passLvlThree = "rosie";
+    string password = "null";
     //Enums
     enum Screen { MainMenu, Password, Win};
     // Start is called before the first frame update
@@ -48,6 +52,10 @@ public class Hacker : MonoBehaviour
         {
             RunMainManu(input);
         }
+        else if (currentScreen == Screen.Password)
+        {
+            Level(level, input);
+        }
 
 
     }
@@ -57,8 +65,8 @@ public class Hacker : MonoBehaviour
         if (input == "1" || input == "2" || input == "3")
         {
             level = System.Convert.ToInt32(input);
-            GameLevel(level);
-            print(Purina[0]);
+            EnterLevel(level);
+            
         }
         else if (input == "47" || input == "69" || input == "420")
         {
@@ -71,34 +79,67 @@ public class Hacker : MonoBehaviour
         }
     }
 
-    void GameLevel(int level)
+    void EnterLevel(int level)
     {
         Terminal.ClearScreen();
         Terminal.WriteLine("You have chosen option: " + level);
         currentScreen = Screen.Password;
-        Terminal.WriteLine("Please enter your password: ");
-        UserPassword("");
-        //if(level == 1)
-        //{
-        //    LevelOne();
-        //}
-        //else if (level == 2)
-        //{
-        //    LevelTwo();
-        //}
-        //else if( level == 3)
-        //{
-        //    LevelThree();
-        //}
+        Terminal.WriteLine("Please enter the password: ");
+
+        
+       
     }
-    void UserPassword(string input)
+    void Level(int level, string input)
     {
-        userPassword = input;
+        if (input == "menu" || input == "Menu")
+        {
+            ShowMainMenu("Hello Hacker_01 Glad You're Having Fun");
+        }
+        if (currentScreen == Screen.Password)
+        {
+            
+            if (level == 1)
+            {
+                password = passLvlOne;
+            }
+            else if (level == 2)
+            {
+                password = passLvlTwo;
+            }
+            else if (level == 3)
+            {
+                password = passLvlThree;
+            }
+            else
+            {
+                ShowMainMenu("Issues Occured Please Try Again");
+            }
+
+            if(input == password)
+            {
+                Winner();
+            }
+            else
+            {
+                Terminal.WriteLine("Wrong Password Please Try Again.");
+            }
+        }
+       
+
     }
+    void Winner()
+    {
+        currentScreen = Screen.Win;
+        Terminal.WriteLine("Condragulations, You're a winner baby");
+
+
+    }
+
+    //void UserPassword(string input)
+    //{
+    //    userPassword = input;
+    //}
     
 
-    void Update()
-    {
-
-    }
+   
 }
