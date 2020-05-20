@@ -6,14 +6,14 @@ using UnityEngine;
 public class Hacker : MonoBehaviour
 {
     //Global Variables 
+    const string menuHint = "You may type menu at anytime";
     int level;
     Screen currentScreen;
     //string userPassword;
-    List<string> Purina = new List<string> { "food", "bowl", "puppy", "toys", "chow" };
-    string passLvlOne = "marleau";
-    string passLvlTwo = "gumbo";
-    string passLvlThree = "rosie";
-    string password = "null";
+    string[] purina = { "food", "toys", "bowl", "puppy", "chow" };
+    string[] infinitDiscs = { "katana", "thrasher", "thunderbird", "destroyer", "mantra","luna","aviar","avenger" };
+    string[] pentagon = { "lockheed", "raytheon", "mercenaries", "blackwater", "honeywell" };
+    string password;
     //Enums
     enum Screen { MainMenu, Password, Win};
     // Start is called before the first frame update
@@ -23,7 +23,10 @@ public class Hacker : MonoBehaviour
     }
 
     // Update is called once per frame
-   
+    void Update()
+    {
+      
+    }
     // Shows Main Menu
     void ShowMainMenu(string greeting)
     {
@@ -62,6 +65,8 @@ public class Hacker : MonoBehaviour
 
     void RunMainManu(string input)
     {
+
+       
         if (input == "1" || input == "2" || input == "3")
         {
             level = System.Convert.ToInt32(input);
@@ -76,15 +81,32 @@ public class Hacker : MonoBehaviour
         else
         {
             Terminal.WriteLine("Please input a number 1-3 and press    Enter");
+            Terminal.WriteLine(menuHint +".");
         }
     }
 
     void EnterLevel(int level)
     {
+        if (level == 1)
+        {
+            password = purina[Random.Range(0, purina.Length)];
+        }
+        else if (level == 2)
+        {
+            password = infinitDiscs[Random.Range(0, infinitDiscs.Length)];
+        }
+        else if (level == 3)
+        {
+            password = pentagon[Random.Range(0, pentagon.Length)];
+        }
+        else
+        {
+            ShowMainMenu("Issues Occured Please Try Again");
+        }
         Terminal.ClearScreen();
         Terminal.WriteLine("You have chosen option: " + level);
         currentScreen = Screen.Password;
-        Terminal.WriteLine("Please enter the password: ");
+        Terminal.WriteLine("Enter the password, hint: " + password.Anagram());
 
         
        
@@ -97,40 +119,52 @@ public class Hacker : MonoBehaviour
         }
         if (currentScreen == Screen.Password)
         {
-            
-            if (level == 1)
-            {
-                password = passLvlOne;
-            }
-            else if (level == 2)
-            {
-                password = passLvlTwo;
-            }
-            else if (level == 3)
-            {
-                password = passLvlThree;
-            }
-            else
-            {
-                ShowMainMenu("Issues Occured Please Try Again");
-            }
-
             if(input == password)
             {
-                Winner();
+                Winner(level);
             }
             else
             {
                 Terminal.WriteLine("Wrong Password Please Try Again.");
+                Terminal.WriteLine(menuHint + " if you getstuck.");
             }
         }
        
 
     }
-    void Winner()
+    void Winner(int level)
     {
-        currentScreen = Screen.Win;
-        Terminal.WriteLine("Condragulations, You're a winner baby");
+        if (level == 1 || level == 2)
+        {
+            currentScreen = Screen.Win;
+            Terminal.ClearScreen();
+            Terminal.WriteLine("Condragulations, You're a winner baby");
+            Terminal.WriteLine("You've unlocked this site, way to go   Hacker_01");
+            Terminal.WriteLine(@"
+                   
+ ,o.           8 8
+d   bzzzzzzzzza8o8b
+ `o'
+        ");
+
+            Terminal.WriteLine("Type Menu to go back to the beginning  and try another site!");
+        }
+
+        else if(level == 3)
+        {
+            currentScreen = Screen.Win;
+            Terminal.ClearScreen();
+            Terminal.WriteLine(@"
+    __,______ 
+   / __.==--'
+  /#(-'
+  `-'   ");
+            Terminal.WriteLine("Great job Hacker_01 you've infiltrated the Pentagon!  You're unstoppable!");
+           
+
+            
+        }
+        
 
 
     }
